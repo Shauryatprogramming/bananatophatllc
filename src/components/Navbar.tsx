@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 const links = [
-  { href: '#pillars', label: 'Focus' },
+  { href: '#focus', label: 'Focus' },
   { href: '#approach', label: 'Approach' },
   { href: '#founders', label: 'Founders' },
   { href: '#contact', label: 'Contact' },
@@ -12,36 +12,48 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 16);
+    const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
-    window.addEventListener('scroll', onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = open ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [open]);
+
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-[100] transition-all duration-300 ${
-        scrolled ? 'backdrop-blur-md bg-bg/70 border-b border-white/5' : 'bg-transparent'
+      className={`fixed top-0 inset-x-0 z-50 transition-[background,backdrop-filter,border] duration-300 ${
+        scrolled ? 'bg-bg/75 backdrop-blur-xl border-b border-white/[0.06]' : 'bg-transparent'
       }`}
     >
-      <nav className="max-w-7xl mx-auto px-6 md:px-10 lg:px-16 h-32 flex items-center justify-between">
-        <a href="#top" className="flex items-center gap-3 group">
-          <img
-            src="/logo-512.png"
-            alt="BananaTophat"
-            className="relative z-[110] h-24 w-auto object-contain drop-shadow-[0_0_24px_rgba(252,211,77,0.45)] group-hover:scale-105 transition-transform"
-          />
-          <span className="font-display font-semibold tracking-tight text-xl group-hover:text-banana transition-colors">
+      <nav className="max-w-7xl mx-auto px-5 md:px-8 lg:px-12 h-16 md:h-20 flex items-center justify-between">
+        <a href="#top" className="flex items-center gap-2.5 group" aria-label="BananaTophat home">
+          <picture>
+            <source srcSet="/logo-256.webp" type="image/webp" />
+            <img
+              src="/logo-256.png"
+              alt="BananaTophat"
+              width="128"
+              height="184"
+              className="h-10 md:h-12 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+              fetchPriority="high"
+            />
+          </picture>
+          <span className="font-display font-semibold tracking-tight text-base md:text-lg text-white group-hover:text-banana transition-colors">
             BananaTophat
           </span>
         </a>
 
-        <ul className="hidden md:flex items-center gap-8">
+        <ul className="hidden md:flex items-center gap-1">
           {links.map((l) => (
             <li key={l.href}>
               <a
                 href={l.href}
-                className="text-sm text-white/70 hover:text-white transition-colors"
+                className="px-3 py-1.5 rounded-md text-sm text-white/65 hover:text-white hover:bg-white/[0.04] transition-colors"
               >
                 {l.label}
               </a>
@@ -49,41 +61,58 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <a href="#contact" className="hidden md:inline-flex btn-primary !py-2 !px-5 text-sm">
+        <a href="#contact" className="hidden md:inline-flex btn-primary">
           Get in touch
         </a>
 
         <button
-          aria-label="Toggle menu"
-          className="md:hidden w-10 h-10 grid place-items-center rounded-lg border border-white/10"
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
+          className="md:hidden -mr-2 w-10 h-10 grid place-items-center rounded-md hover:bg-white/[0.04] transition-colors"
           onClick={() => setOpen((v) => !v)}
         >
-          <span className="block w-5 h-px bg-white relative before:content-[''] before:absolute before:-top-1.5 before:left-0 before:w-5 before:h-px before:bg-white after:content-[''] after:absolute after:top-1.5 after:left-0 after:w-5 after:h-px after:bg-white" />
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-white">
+            {open ? (
+              <path d="M18 6L6 18M6 6l12 12" />
+            ) : (
+              <>
+                <line x1="3" y1="7" x2="21" y2="7" />
+                <line x1="3" y1="17" x2="21" y2="17" />
+              </>
+            )}
+          </svg>
         </button>
       </nav>
 
-      {open && (
-        <div className="md:hidden border-t border-white/5 bg-bg/95 backdrop-blur-md">
-          <ul className="flex flex-col px-6 py-4 gap-3">
-            {links.map((l) => (
-              <li key={l.href}>
-                <a
-                  href={l.href}
-                  onClick={() => setOpen(false)}
-                  className="block py-2 text-white/80 hover:text-white"
-                >
-                  {l.label}
-                </a>
-              </li>
-            ))}
-            <li>
-              <a href="#contact" onClick={() => setOpen(false)} className="btn-primary !py-2 !px-5 text-sm w-full">
-                Get in touch
+      {/* Mobile menu */}
+      <div
+        className={`md:hidden overflow-hidden transition-[max-height,opacity] duration-300 ${
+          open ? 'max-h-96 opacity-100 border-t border-white/[0.06]' : 'max-h-0 opacity-0'
+        } bg-bg/95 backdrop-blur-xl`}
+      >
+        <ul className="flex flex-col px-5 py-4 gap-1">
+          {links.map((l) => (
+            <li key={l.href}>
+              <a
+                href={l.href}
+                onClick={() => setOpen(false)}
+                className="block py-3 px-3 rounded-md text-white/85 hover:text-white hover:bg-white/[0.04] transition-colors"
+              >
+                {l.label}
               </a>
             </li>
-          </ul>
-        </div>
-      )}
+          ))}
+          <li className="pt-2">
+            <a
+              href="#contact"
+              onClick={() => setOpen(false)}
+              className="btn-primary w-full"
+            >
+              Get in touch
+            </a>
+          </li>
+        </ul>
+      </div>
     </header>
   );
 }

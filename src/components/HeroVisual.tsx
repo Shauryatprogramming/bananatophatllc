@@ -1,17 +1,21 @@
-const orbits = [
-  { r: 90, count: 4, dur: 24, opacity: 0.5 },
-  { r: 140, count: 6, dur: 36, opacity: 0.4, reverse: true },
-  { r: 195, count: 8, dur: 48, opacity: 0.3 },
+/**
+ * Lightweight hero visual — concentric arcs + glowing core.
+ * CSS-only animation (no SVG <animate>) for smooth perf on mobile.
+ */
+const domains = [
+  { label: 'Vision', angle: -90 },
+  { label: 'Language', angle: -30 },
+  { label: 'Audio', angle: 30 },
+  { label: 'Reasoning', angle: 90 },
+  { label: 'Robotics', angle: 150 },
+  { label: 'Science', angle: 210 },
 ];
-
-const domains = ['Vision', 'Language', 'Audio', 'Reasoning', 'Robotics', 'Science'];
 
 export default function HeroVisual() {
   return (
-    <div className="relative aspect-square w-full max-w-[520px] mx-auto">
-      {/* Soft ambient glow */}
-      <div className="absolute inset-8 rounded-full bg-accent/15 blur-[100px]" />
-      <div className="absolute inset-16 rounded-full bg-accent2/15 blur-[80px]" />
+    <div className="relative aspect-square w-full max-w-[460px] mx-auto select-none" aria-hidden="true">
+      {/* Ambient glow */}
+      <div className="absolute inset-[15%] rounded-full bg-accent/20 blur-3xl" />
 
       <svg
         viewBox="0 0 500 500"
@@ -19,151 +23,116 @@ export default function HeroVisual() {
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <radialGradient id="core">
-            <stop offset="0%" stopColor="#A5F3FC" stopOpacity="1" />
-            <stop offset="40%" stopColor="#22D3EE" stopOpacity="0.9" />
+          <radialGradient id="hv-core">
+            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
+            <stop offset="40%" stopColor="#67E8F9" stopOpacity="0.95" />
             <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
           </radialGradient>
-          <radialGradient id="coreInner">
-            <stop offset="0%" stopColor="#FFFFFF" stopOpacity="1" />
-            <stop offset="100%" stopColor="#A5F3FC" stopOpacity="0" />
-          </radialGradient>
-          <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="#22D3EE" stopOpacity="0.0" />
-            <stop offset="50%" stopColor="#22D3EE" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.0" />
+          <linearGradient id="hv-arc" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#22D3EE" stopOpacity="0" />
+            <stop offset="50%" stopColor="#67E8F9" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="#3B82F6" stopOpacity="0" />
           </linearGradient>
-          <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="3" result="b" />
-            <feMerge>
-              <feMergeNode in="b" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
         </defs>
 
-        {/* Outer faint guide rings */}
-        {orbits.map((o) => (
+        {/* Guide rings (static) */}
+        {[80, 130, 180, 220].map((r, i) => (
           <circle
-            key={`ring-${o.r}`}
+            key={r}
             cx="250"
             cy="250"
-            r={o.r}
+            r={r}
             fill="none"
             stroke="rgba(255,255,255,0.06)"
             strokeWidth="1"
-            strokeDasharray="2 6"
+            strokeDasharray={i % 2 === 0 ? '2 6' : 'none'}
           />
         ))}
 
-        {/* Highlighted arc on each orbit */}
-        {orbits.map((o, idx) => (
-          <g key={`arc-${o.r}`} style={{ transformOrigin: '250px 250px' }}>
-            <circle
-              cx="250"
-              cy="250"
-              r={o.r}
-              fill="none"
-              stroke="url(#ring)"
-              strokeWidth="1.4"
-              strokeDasharray={`${o.r * 1.2} ${o.r * 5}`}
-              opacity={o.opacity}
-            >
-              <animateTransform
-                attributeName="transform"
-                type="rotate"
-                from={o.reverse ? '360 250 250' : '0 250 250'}
-                to={o.reverse ? '0 250 250' : '360 250 250'}
-                dur={`${o.dur}s`}
-                repeatCount="indefinite"
-              />
-            </circle>
+        {/* Highlight arcs — rotated via CSS */}
+        <g className="hv-arc-1">
+          <circle cx="250" cy="250" r="130" fill="none" stroke="url(#hv-arc)" strokeWidth="1.6" strokeDasharray="180 600" />
+        </g>
+        <g className="hv-arc-2">
+          <circle cx="250" cy="250" r="180" fill="none" stroke="url(#hv-arc)" strokeWidth="1.4" strokeDasharray="140 600" />
+        </g>
+        <g className="hv-arc-3">
+          <circle cx="250" cy="250" r="220" fill="none" stroke="url(#hv-arc)" strokeWidth="1.2" strokeDasharray="100 600" />
+        </g>
 
-            {/* Orbiting nodes */}
-            <g>
-              <animateTransform
-                attributeName="transform"
-                type="rotate"
-                from={o.reverse ? '360 250 250' : '0 250 250'}
-                to={o.reverse ? '0 250 250' : '360 250 250'}
-                dur={`${o.dur}s`}
-                repeatCount="indefinite"
-              />
-              {Array.from({ length: o.count }).map((_, i) => {
-                const angle = (i / o.count) * Math.PI * 2;
-                const x = 250 + Math.cos(angle) * o.r;
-                const y = 250 + Math.sin(angle) * o.r;
-                const isHighlight = i === 0;
-                return (
-                  <g key={`n-${idx}-${i}`} filter={isHighlight ? 'url(#softGlow)' : undefined}>
-                    <circle
-                      cx={x}
-                      cy={y}
-                      r={isHighlight ? 4.5 : 2.5}
-                      fill={isHighlight ? '#A5F3FC' : '#22D3EE'}
-                      opacity={isHighlight ? 1 : 0.7}
-                    />
-                    {isHighlight && (
-                      <circle cx={x} cy={y} r="10" fill="none" stroke="#22D3EE" strokeOpacity="0.5">
-                        <animate
-                          attributeName="r"
-                          values="6;16;6"
-                          dur="3s"
-                          repeatCount="indefinite"
-                        />
-                        <animate
-                          attributeName="stroke-opacity"
-                          values="0.6;0;0.6"
-                          dur="3s"
-                          repeatCount="indefinite"
-                        />
-                      </circle>
-                    )}
-                  </g>
-                );
-              })}
+        {/* Static accent nodes on rings */}
+        {[
+          { r: 130, a: -45, big: true },
+          { r: 130, a: 135 },
+          { r: 180, a: 60 },
+          { r: 180, a: -120, big: true },
+          { r: 220, a: 0 },
+          { r: 220, a: 180 },
+          { r: 220, a: 90, big: true },
+        ].map((n, i) => {
+          const rad = (n.a * Math.PI) / 180;
+          const x = 250 + Math.cos(rad) * n.r;
+          const y = 250 + Math.sin(rad) * n.r;
+          return (
+            <g key={i}>
+              <circle cx={x} cy={y} r={n.big ? 4 : 2.4} fill="#67E8F9" opacity={n.big ? 1 : 0.7} />
+              {n.big && (
+                <circle cx={x} cy={y} r="9" fill="none" stroke="#67E8F9" strokeOpacity="0.3" className="hv-pulse" style={{ animationDelay: `${i * 0.5}s` }} />
+              )}
             </g>
-          </g>
-        ))}
+          );
+        })}
 
         {/* Core */}
-        <circle cx="250" cy="250" r="50" fill="url(#core)" />
-        <circle cx="250" cy="250" r="18" fill="url(#coreInner)" />
-        <circle cx="250" cy="250" r="6" fill="#FFFFFF" opacity="0.95" />
+        <circle cx="250" cy="250" r="60" fill="url(#hv-core)" />
+        <circle cx="250" cy="250" r="14" fill="#FFFFFF" opacity="0.95" />
+        <circle cx="250" cy="250" r="6" fill="#A5F3FC" />
 
-        {/* Crosshair details */}
-        <g stroke="rgba(34,211,238,0.35)" strokeWidth="0.8">
-          <line x1="250" y1="14" x2="250" y2="40" />
-          <line x1="250" y1="460" x2="250" y2="486" />
-          <line x1="14" y1="250" x2="40" y2="250" />
-          <line x1="460" y1="250" x2="486" y2="250" />
-        </g>
-        <g fill="rgba(255,255,255,0.35)" className="mono" fontSize="9" letterSpacing="0.2em">
-          <text x="250" y="10" textAnchor="middle">N</text>
-          <text x="250" y="498" textAnchor="middle">S</text>
-          <text x="8" y="253" textAnchor="start">W</text>
-          <text x="492" y="253" textAnchor="end">E</text>
+        {/* Crosshair ticks */}
+        <g stroke="rgba(34,211,238,0.4)" strokeWidth="1">
+          <line x1="250" y1="14" x2="250" y2="36" />
+          <line x1="250" y1="464" x2="250" y2="486" />
+          <line x1="14" y1="250" x2="36" y2="250" />
+          <line x1="464" y1="250" x2="486" y2="250" />
         </g>
       </svg>
 
       {/* Domain labels around the perimeter */}
       <div className="absolute inset-0 pointer-events-none">
-        {domains.map((d, i) => {
-          const angle = (i / domains.length) * Math.PI * 2 - Math.PI / 2;
-          const r = 48;
-          const x = 50 + Math.cos(angle) * r;
-          const y = 50 + Math.sin(angle) * r;
+        {domains.map((d) => {
+          const rad = (d.angle * Math.PI) / 180;
+          const x = 50 + Math.cos(rad) * 47;
+          const y = 50 + Math.sin(rad) * 47;
           return (
             <span
-              key={d}
-              className="absolute mono text-[10px] uppercase tracking-[0.2em] text-white/45 -translate-x-1/2 -translate-y-1/2"
+              key={d.label}
+              className="absolute mono text-[10px] md:text-[11px] uppercase tracking-[0.2em] text-white/55 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap"
               style={{ left: `${x}%`, top: `${y}%` }}
             >
-              {d}
+              {d.label}
             </span>
           );
         })}
       </div>
+
+      <style>{`
+        .hv-arc-1 { transform-origin: 250px 250px; animation: hv-rot 28s linear infinite; }
+        .hv-arc-2 { transform-origin: 250px 250px; animation: hv-rot-rev 40s linear infinite; }
+        .hv-arc-3 { transform-origin: 250px 250px; animation: hv-rot 52s linear infinite; }
+        @keyframes hv-rot { to { transform: rotate(360deg); } }
+        @keyframes hv-rot-rev { to { transform: rotate(-360deg); } }
+        .hv-pulse {
+          transform-origin: center;
+          animation: hv-pulse 4s ease-in-out infinite;
+        }
+        @keyframes hv-pulse {
+          0%, 100% { r: 7; stroke-opacity: 0.5; }
+          50% { r: 16; stroke-opacity: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .hv-arc-1, .hv-arc-2, .hv-arc-3, .hv-pulse { animation: none; }
+        }
+      `}</style>
     </div>
   );
 }

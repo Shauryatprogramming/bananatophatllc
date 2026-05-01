@@ -2,55 +2,103 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#04091A" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/logo-192.png" />
-    <link rel="apple-touch-icon" href="/logo-192.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#04070d" />
-    <meta name="description" content="BananaTophat develops AI in general — across all types, all domains, all possibilities. Innovative artificial intelligence systems from research to real-world impact." />
-    <meta name="keywords" content="BananaTophat, AI, artificial intelligence, machine learning, generative AI, computer vision, NLP, AI research" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- SEO -->
+    <title>BananaTophat — AI research, applied systems, and infrastructure</title>
+    <meta name="description" content="BananaTophat is an AI company building artificial intelligence end-to-end — foundational research, applied systems, and the platforms that run them." />
+    <meta name="keywords" content="BananaTophat, AI company, artificial intelligence, foundation models, applied AI, AI infrastructure, multimodal AI, AI research" />
     <meta name="author" content="BananaTophat" />
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+    <meta name="googlebot" content="index,follow" />
+    <meta name="bingbot" content="index,follow" />
     <link rel="canonical" href="https://bananatophat.com/" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="BananaTophat — Building AI across all domains" />
-    <meta property="og:description" content="We develop artificial intelligence in general, across every type and domain — from research to real-world impact." />
+    <meta property="og:site_name" content="BananaTophat" />
+    <meta property="og:title" content="BananaTophat — AI research, applied systems, and infrastructure" />
+    <meta property="og:description" content="An AI company building artificial intelligence end-to-end — research, applied systems, and the platforms that run them." />
     <meta property="og:url" content="https://bananatophat.com/" />
-    <meta property="og:image" content="https://bananatophat.com/logo-512.png" />
-    <meta name="twitter:image" content="https://bananatophat.com/logo-512.png" />
+    <meta property="og:image" content="https://bananatophat.com/favicon-512.png" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta property="og:locale" content="en_US" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="BananaTophat — Building AI across all domains" />
-    <meta name="twitter:description" content="We develop artificial intelligence in general, across every type and domain." />
+    <meta name="twitter:title" content="BananaTophat — AI research, applied systems, and infrastructure" />
+    <meta name="twitter:description" content="An AI company building artificial intelligence end-to-end." />
+    <meta name="twitter:image" content="https://bananatophat.com/favicon-512.png" />
 
+    <!-- Preconnect / preload critical resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="preload" as="image" href="/logo-256.webp" type="image/webp" />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
 
-    <title>BananaTophat — Building AI across all domains</title>
-
+    <!-- Structured Data -->
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "BananaTophat",
-        "url": "https://bananatophat.com",
-        "logo": "https://bananatophat.com/logo-512.png",
-        "description": "BananaTophat develops AI in general, across all types of artificial intelligence.",
-        "founder": [
-          { "@type": "Person", "name": "Shaurya Toor", "jobTitle": "Founder & Chief AI Officer" },
-          { "@type": "Person", "name": "Agam Toor", "jobTitle": "Founder" },
-          { "@type": "Person", "name": "Anya Singh", "jobTitle": "Founder" },
-          { "@type": "Person", "name": "Alex Singh", "jobTitle": "Founder" }
-        ]
-      }
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://bananatophat.com/#organization",
+          "name": "BananaTophat",
+          "url": "https://bananatophat.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://bananatophat.com/favicon-512.png",
+            "width": 512,
+            "height": 512
+          },
+          "description": "An AI company building artificial intelligence end-to-end — research, applied systems, and infrastructure.",
+          "email": "contact@bananatophat.com",
+          "founders": [
+            { "@type": "Person", "name": "Shaurya Toor", "jobTitle": "Founder & Chief AI Officer" },
+            { "@type": "Person", "name": "Agam Toor", "jobTitle": "Founder" },
+            { "@type": "Person", "name": "Anya Singh", "jobTitle": "Founder" },
+            { "@type": "Person", "name": "Alex Singh", "jobTitle": "Founder" }
+          ]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://bananatophat.com/#website",
+          "url": "https://bananatophat.com/",
+          "name": "BananaTophat",
+          "publisher": { "@id": "https://bananatophat.com/#organization" },
+          "inLanguage": "en-US"
+        }
+      ]
+    }
     </script>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <div style="padding:2rem;font-family:system-ui;color:#fff;background:#04091A;min-height:100vh">
+        <h1 style="font-size:2rem;margin:0 0 1rem">BananaTophat</h1>
+        <p>An AI company building research, applied systems, and infrastructure.</p>
+        <p>This site requires JavaScript. Email us at <a href="mailto:contact@bananatophat.com" style="color:#22D3EE">contact@bananatophat.com</a>.</p>
+      </div>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

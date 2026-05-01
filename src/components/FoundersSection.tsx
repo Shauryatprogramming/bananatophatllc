@@ -1,4 +1,11 @@
-const founders = [
+type Founder = {
+  name: string;
+  title: string;
+  bio: string;
+  initials: string;
+};
+
+const founders: Founder[] = [
   {
     name: 'Shaurya Toor',
     title: 'Founder & Chief AI Officer',
@@ -27,31 +34,35 @@ const founders = [
 
 export default function FoundersSection() {
   return (
-    <section id="founders" className="section-padding relative">
-      <div className="max-w-6xl mx-auto">
+    <section id="founders" className="section-y relative">
+      <div className="max-w-6xl mx-auto px-5 md:px-8 lg:px-12">
         <div className="max-w-2xl">
-          <p className="text-xs mono uppercase tracking-[0.25em] text-accent mb-4">// Team</p>
-          <h2 className="font-display font-bold text-4xl md:text-5xl tracking-tight">
+          <p className="eyebrow mb-3">// Team</p>
+          <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl tracking-[-0.02em]">
             The people behind BananaTophat.
           </h2>
-          <p className="mt-6 text-lg text-white/70">
-            A founding team spanning research, systems engineering, and product — united by the belief that
-            general-purpose AI is the defining technology of the decade.
+          <p className="mt-5 text-base md:text-lg text-white/65 leading-relaxed">
+            A founding team spanning research, systems engineering, and product — united by the
+            belief that general-purpose AI is the defining technology of the decade.
           </p>
         </div>
 
-        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {founders.map((f) => (
             <div
               key={f.name}
-              className="group glass rounded-xl p-6 hover:border-accent/40 hover:-translate-y-1 transition-all duration-300"
+              className="surface surface-hover rounded-xl p-5"
             >
-              <div className="w-14 h-14 rounded-lg overflow-hidden ring-1 ring-banana/20 bg-banana/5 grid place-items-center group-hover:ring-banana/60 transition-all">
-                <span className="mono font-semibold text-banana text-lg">{f.initials}</span>
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-md bg-banana/10 ring-1 ring-banana/30 grid place-items-center">
+                  <span className="mono font-semibold text-banana text-sm">{f.initials}</span>
+                </div>
+                <div className="min-w-0">
+                  <h3 className="font-display font-semibold text-[0.95rem] truncate">{f.name}</h3>
+                  <p className="text-banana/85 text-xs mt-0.5 truncate">{f.title}</p>
+                </div>
               </div>
-              <h3 className="mt-5 font-display font-semibold text-lg">{f.name}</h3>
-              <p className="text-banana/90 text-sm mt-1">{f.title}</p>
-              <p className="mt-3 text-white/55 text-sm leading-relaxed">{f.bio}</p>
+              <p className="mt-4 text-white/55 text-sm leading-relaxed">{f.bio}</p>
             </div>
           ))}
         </div>

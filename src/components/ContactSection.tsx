@@ -45,23 +45,22 @@ export default function ContactSection() {
       form.message,
     ].filter(Boolean);
 
-    const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
-    window.location.href = mailto;
+    window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
 
     setSubmitted(true);
     setForm(empty);
   };
 
   return (
-    <section id="contact" className="section-padding relative">
-      <div className="max-w-5xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+    <section id="contact" className="section-y relative">
+      <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-12">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
           <div>
-            <p className="text-xs mono uppercase tracking-[0.25em] text-accent mb-4">// Contact</p>
-            <h2 className="font-display font-bold text-4xl md:text-5xl tracking-tight">
-              Let's build something.
+            <p className="eyebrow mb-3">// Contact</p>
+            <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl tracking-[-0.02em]">
+              Let&apos;s build something.
             </h2>
-            <p className="mt-6 text-lg text-white/70 leading-relaxed">
+            <p className="mt-5 text-base md:text-lg text-white/65 leading-relaxed">
               Research collaborations, applied AI engagements, partnerships, or hiring conversations —
               all welcome.
             </p>
@@ -69,20 +68,20 @@ export default function ContactSection() {
               href={`mailto:${CONTACT_EMAIL}`}
               className="mt-6 inline-flex items-center gap-2 mono text-sm text-accent hover:text-accent/80 transition-colors"
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                 <polyline points="22,6 12,13 2,6" />
               </svg>
               {CONTACT_EMAIL}
             </a>
-            <p className="mt-6 text-sm text-white/45 mono">→ Response time: within 1–2 business days</p>
+            <p className="mt-5 text-xs text-white/45 mono">→ Response time: within 1–2 business days</p>
           </div>
 
-          <form onSubmit={onSubmit} noValidate className="glass rounded-2xl p-6 md:p-8 space-y-5">
+          <form onSubmit={onSubmit} noValidate className="surface rounded-xl p-5 md:p-6 space-y-4">
             {submitted && (
-              <div className="rounded-lg border border-accent/40 bg-accent/10 px-4 py-3 text-sm text-accent">
-                Your email client should have opened with the message ready to send. If not, you can
-                reach us directly at <span className="underline">{CONTACT_EMAIL}</span>.
+              <div className="rounded-md border border-accent/40 bg-accent/10 px-3.5 py-2.5 text-sm text-accent">
+                Your email client should have opened. If not, reach us at{' '}
+                <a href={`mailto:${CONTACT_EMAIL}`} className="underline">{CONTACT_EMAIL}</a>.
               </div>
             )}
 
@@ -93,6 +92,7 @@ export default function ContactSection() {
               input={
                 <input
                   type="text"
+                  autoComplete="name"
                   value={form.name}
                   onChange={update('name')}
                   className={inputCls(!!errors.name)}
@@ -107,6 +107,8 @@ export default function ContactSection() {
               input={
                 <input
                   type="email"
+                  autoComplete="email"
+                  inputMode="email"
                   value={form.email}
                   onChange={update('email')}
                   className={inputCls(!!errors.email)}
@@ -119,6 +121,7 @@ export default function ContactSection() {
               input={
                 <input
                   type="text"
+                  autoComplete="organization"
                   value={form.company}
                   onChange={update('company')}
                   className={inputCls(false)}
@@ -132,7 +135,7 @@ export default function ContactSection() {
               error={errors.message}
               input={
                 <textarea
-                  rows={5}
+                  rows={4}
                   value={form.message}
                   onChange={update('message')}
                   className={inputCls(!!errors.message) + ' resize-none'}
@@ -141,9 +144,9 @@ export default function ContactSection() {
               }
             />
 
-            <button type="submit" className="btn-primary w-full">
+            <button type="submit" className="btn-primary w-full !py-3">
               Send message
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M5 12h14M13 5l7 7-7 7" />
               </svg>
             </button>
@@ -156,8 +159,8 @@ export default function ContactSection() {
 
 function inputCls(hasError: boolean) {
   return [
-    'w-full bg-white/[0.03] border rounded-lg px-4 py-3 text-white placeholder:text-white/30',
-    'focus:outline-none focus:ring-2 focus:ring-accent/40 transition-colors',
+    'w-full bg-white/[0.025] border rounded-md px-3.5 py-2.5 text-sm text-white placeholder:text-white/30',
+    'focus:outline-none focus:ring-2 focus:ring-accent/30 transition-colors',
     hasError ? 'border-red-400/60' : 'border-white/10 focus:border-accent/50',
   ].join(' ');
 }
@@ -175,7 +178,7 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="block text-sm text-white/70 mb-2">
+      <span className="block text-xs text-white/65 mb-1.5">
         {label} {required && <span className="text-accent">*</span>}
       </span>
       {input}

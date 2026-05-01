@@ -17,7 +17,7 @@ const items: Item[] = [
   },
   {
     title: 'Cross-disciplinary',
-    body: 'Researchers, engineers, and domain experts in the same room. Hard problems don\'t respect job titles.',
+    body: 'Researchers, engineers, and domain experts in the same room. Hard problems do not respect job titles.',
     icon: (
       <>
         <circle cx="9" cy="7" r="4" />
@@ -48,30 +48,30 @@ const items: Item[] = [
 
 export default function ApproachSection() {
   return (
-    <section id="approach" className="section-padding relative">
-      <div className="max-w-6xl mx-auto">
+    <section id="approach" className="section-y relative">
+      <div className="max-w-6xl mx-auto px-5 md:px-8 lg:px-12">
         <div className="max-w-2xl">
-          <p className="text-xs mono uppercase tracking-[0.25em] text-accent mb-4">// Approach</p>
-          <h2 className="font-display font-bold text-4xl md:text-5xl tracking-tight">
+          <p className="eyebrow mb-3">// Approach</p>
+          <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl tracking-[-0.02em]">
             How we work.
           </h2>
-          <p className="mt-6 text-lg text-white/70 leading-relaxed">
+          <p className="mt-5 text-base md:text-lg text-white/65 leading-relaxed">
             The principles behind every model we train and every system we ship.
           </p>
         </div>
 
-        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {items.map((it) => (
             <div
               key={it.title}
-              className="group glass rounded-xl p-6 hover:border-accent/40 hover:-translate-y-0.5 transition-all duration-300"
+              className="surface surface-hover rounded-xl p-5"
             >
-              <div className="w-10 h-10 rounded-lg border border-white/10 grid place-items-center text-accent group-hover:border-accent/40 group-hover:bg-accent/5 transition-all">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+              <div className="w-9 h-9 rounded-md border border-white/10 grid place-items-center text-accent bg-accent/5">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   {it.icon}
                 </svg>
               </div>
-              <h3 className="mt-5 font-display font-semibold text-base">{it.title}</h3>
+              <h3 className="mt-4 font-display font-semibold text-[0.95rem]">{it.title}</h3>
               <p className="mt-2 text-white/55 text-sm leading-relaxed">{it.body}</p>
             </div>
           ))}

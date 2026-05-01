@@ -1,0 +1,3 @@
+Contact: mailto:contact@bananatophat.com
+Preferred-Languages: en
+Canonical: https://bananatophat.com/.well-known/security.txt
