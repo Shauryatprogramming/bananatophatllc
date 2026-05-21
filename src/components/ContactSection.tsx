@@ -1,4 +1,5 @@
 import { FormEvent, useState } from 'react';
+import { useReveal } from '../hooks/useReveal';
 
 const CONTACT_EMAIL = 'contact@bananatophat.com';
 
@@ -15,6 +16,7 @@ export default function ContactSection() {
   const [form, setForm] = useState<FormState>(empty);
   const [errors, setErrors] = useState<Partial<FormState>>({});
   const [submitted, setSubmitted] = useState(false);
+  const ref = useReveal<HTMLDivElement>();
 
   const update = (k: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [k]: e.target.value });
@@ -54,7 +56,7 @@ export default function ContactSection() {
   return (
     <section id="contact" className="section-y relative">
       <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start reveal" ref={ref}>
           <div>
             <p className="eyebrow mb-3">// Contact</p>
             <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl tracking-[-0.02em]">
@@ -66,7 +68,7 @@ export default function ContactSection() {
             </p>
             <a
               href={`mailto:${CONTACT_EMAIL}`}
-              className="mt-6 inline-flex items-center gap-2 mono text-sm text-accent hover:text-accent/80 transition-colors"
+              className="link-underline mt-6 inline-flex items-center gap-2 mono text-sm text-accent hover:text-accent/80 transition-colors"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
@@ -75,9 +77,14 @@ export default function ContactSection() {
               {CONTACT_EMAIL}
             </a>
             <p className="mt-5 text-xs text-white/45 mono">→ Response time: within 1–2 business days</p>
+
+            {/* Subtle terminal-style detail */}
+            <div className="mt-8 surface rounded-md p-3.5 mono text-[11px] text-white/60 leading-relaxed">
+              <span className="text-banana">$</span> say <span className="text-accent">hello</span> <span className="blink-cursor"></span>
+            </div>
           </div>
 
-          <form onSubmit={onSubmit} noValidate className="surface rounded-xl p-5 md:p-6 space-y-4">
+          <form onSubmit={onSubmit} noValidate className="surface surface-glow rounded-xl p-5 md:p-6 space-y-4">
             {submitted && (
               <div className="rounded-md border border-accent/40 bg-accent/10 px-3.5 py-2.5 text-sm text-accent">
                 Your email client should have opened. If not, reach us at{' '}

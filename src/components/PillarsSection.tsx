@@ -1,3 +1,5 @@
+import { useReveal } from '../hooks/useReveal';
+
 type Pillar = {
   num: string;
   title: string;
@@ -16,7 +18,7 @@ function ResearchGraphic() {
         </radialGradient>
         <linearGradient id="rg-edge" x1="0" y1="0" x2="1" y2="0">
           <stop offset="0%" stopColor="#22D3EE" stopOpacity="0.05" />
-          <stop offset="50%" stopColor="#22D3EE" stopOpacity="0.45" />
+          <stop offset="50%" stopColor="#22D3EE" stopOpacity="0.5" />
           <stop offset="100%" stopColor="#3B82F6" stopOpacity="0.05" />
         </linearGradient>
       </defs>
@@ -125,10 +127,11 @@ const pillars: Pillar[] = [
 ];
 
 export default function PillarsSection() {
+  const ref = useReveal<HTMLDivElement>();
   return (
     <section id="focus" className="section-y relative">
       <div className="max-w-6xl mx-auto px-5 md:px-8 lg:px-12">
-        <div className="max-w-2xl">
+        <div className="max-w-2xl reveal" ref={ref}>
           <p className="eyebrow mb-3">// Focus</p>
           <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl tracking-[-0.02em]">
             Three pillars. One company.
@@ -139,24 +142,36 @@ export default function PillarsSection() {
           </p>
         </div>
 
-        <div className="mt-12 grid md:grid-cols-3 gap-4 md:gap-5">
-          {pillars.map((p) => (
-            <article
-              key={p.num}
-              className="surface surface-hover rounded-xl overflow-hidden flex flex-col"
-            >
-              <div className="relative aspect-[16/10] bg-gradient-to-br from-white/[0.03] to-transparent border-b border-white/[0.06]">
-                {p.graphic}
-              </div>
-              <div className="p-5 md:p-6">
-                <div className="mono text-2xs text-banana/80">{p.num}</div>
-                <h3 className="mt-2.5 font-display font-semibold text-lg md:text-xl">{p.title}</h3>
-                <p className="mt-2.5 text-white/60 leading-relaxed text-sm">{p.body}</p>
-              </div>
-            </article>
+        <div className="mt-10 sm:mt-12 grid md:grid-cols-3 gap-4 md:gap-5">
+          {pillars.map((p, i) => (
+            <PillarCard key={p.num} pillar={p} index={i} />
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function PillarCard({ pillar, index }: { pillar: Pillar; index: number }) {
+  const ref = useReveal<HTMLDivElement>();
+  return (
+    <article
+      ref={ref}
+      className="reveal surface surface-hover surface-glow rounded-xl overflow-hidden flex flex-col group"
+      style={{ transitionDelay: `${index * 80}ms` }}
+    >
+      <div className="relative aspect-[16/10] bg-gradient-to-br from-white/[0.03] to-transparent border-b border-white/[0.06] overflow-hidden">
+        <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.04]">
+          {pillar.graphic}
+        </div>
+        <div className="absolute top-3 right-3 mono text-2xs text-accent/70 px-1.5 py-0.5 rounded border border-accent/20 bg-accent/5">
+          {pillar.num}
+        </div>
+      </div>
+      <div className="p-5 md:p-6">
+        <h3 className="font-display font-semibold text-lg md:text-xl tracking-tight">{pillar.title}</h3>
+        <p className="mt-2.5 text-white/60 leading-relaxed text-sm">{pillar.body}</p>
+      </div>
+    </article>
   );
 }

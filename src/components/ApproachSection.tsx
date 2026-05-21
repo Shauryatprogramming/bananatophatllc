@@ -1,3 +1,5 @@
+import { useReveal } from '../hooks/useReveal';
+
 type Item = {
   title: string;
   body: string;
@@ -47,10 +49,11 @@ const items: Item[] = [
 ];
 
 export default function ApproachSection() {
+  const ref = useReveal<HTMLDivElement>();
   return (
     <section id="approach" className="section-y relative">
       <div className="max-w-6xl mx-auto px-5 md:px-8 lg:px-12">
-        <div className="max-w-2xl">
+        <div className="max-w-2xl reveal" ref={ref}>
           <p className="eyebrow mb-3">// Approach</p>
           <h2 className="font-display font-bold text-3xl md:text-4xl lg:text-5xl tracking-[-0.02em]">
             How we work.
@@ -60,23 +63,31 @@ export default function ApproachSection() {
           </p>
         </div>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {items.map((it) => (
-            <div
-              key={it.title}
-              className="surface surface-hover rounded-xl p-5"
-            >
-              <div className="w-9 h-9 rounded-md border border-white/10 grid place-items-center text-accent bg-accent/5">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  {it.icon}
-                </svg>
-              </div>
-              <h3 className="mt-4 font-display font-semibold text-[0.95rem]">{it.title}</h3>
-              <p className="mt-2 text-white/55 text-sm leading-relaxed">{it.body}</p>
-            </div>
+        <div className="mt-10 sm:mt-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {items.map((it, i) => (
+            <ApproachCard key={it.title} item={it} index={i} />
           ))}
         </div>
       </div>
     </section>
+  );
+}
+
+function ApproachCard({ item, index }: { item: Item; index: number }) {
+  const ref = useReveal<HTMLDivElement>();
+  return (
+    <div
+      ref={ref}
+      className="reveal surface surface-hover surface-glow rounded-xl p-5 group"
+      style={{ transitionDelay: `${index * 60}ms` }}
+    >
+      <div className="w-9 h-9 rounded-md border border-white/10 grid place-items-center text-accent bg-accent/5 group-hover:border-accent/40 transition-colors">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          {item.icon}
+        </svg>
+      </div>
+      <h3 className="mt-4 font-display font-semibold text-[0.95rem] tracking-tight">{item.title}</h3>
+      <p className="mt-2 text-white/55 text-sm leading-relaxed">{item.body}</p>
+    </div>
   );
 }
